@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="it" lang="it">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Sk Rotating Menu</title>
+	<script type="text/javascript" src="js/libs/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="js/libs/raphael-min.js"></script>
+	<script type="text/javascript" src="js/raphael.sk-rotating-menu.js"></script>
+	<style type="text/css">
+		#srmContainer{background:url(bg.png) no-repeat 49px 139px}
+	</style>
+	<script type="text/javascript">
+		(function ($, window, undefined){
+			$(document).ready(function(){
+				// Collecting elements to be added to the menu
+				if($('#menu a').length > 0){
+					var links = [];
+					$('#menu a').each(function(){
+						links.push({
+						name: $(this).text(), 
+						href: $(this).attr('href'),
+						// Selected item
+						selected: ($(this).hasClass('selected'))});
+					});
+					
+					// Paper
+					// Parameters: container id, paper width, paper height
+					var menuPaper = Raphael('srmContainer', 500, 400);
+					// Menu
+					// Parameters: center position x, center position y, radius, array of links, function to be called on link click
+					var menu = menuPaper.skRotatingMenu(200, 200, 280, links, {
+						linkFunction: function(href, id){
+							console.log(href, id);
+							
+							// Return false won't rotate the menu
+							return true;
+						}
+					});
+					
+					// Programmatically rotating the menu
+					$('#menu a').click(function(){
+						menu.select($('li').index($(this).parent()));
+						return false;
+					});
+					
+				}
+			});
+		})(jQuery, window);
+	</script>
+  </head>
+  <body>
+	<div id="wrap">
+		<div id="srmContainer"></div>
+		<div class="navigation">
+		  <ul id="menu">
+			<li><a href="lorem.html">Lorem</a></li>
+			<!-- Selected link -->
+			<li><a href="ipsum.html" class="selected">Ipsum</a></li>
+			<li><a href="#">Dolor sit amet</a></li>
+			<li><a href="#">Consectetur</a></li>
+			<li><a href="#">Adipiscing elit</a></li>
+		  </ul>
+		</div>
+	</div>
+  </body>
+</html>
